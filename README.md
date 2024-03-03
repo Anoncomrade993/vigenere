@@ -1,0 +1,1 @@
+ The approach to vigenere cipher algorithm in Rust with well structured functionality 
