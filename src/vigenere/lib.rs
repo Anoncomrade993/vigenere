@@ -5,10 +5,10 @@ use serde_json::{
 
 pub mod vigenere{
 const ALPHABET:&str = "abcdefghijklmnopqrstuvwxyz";
-pub fn gen_random (len:u8)-> &'a str{
+pub fn gen_random (len:i32)-> &'a str{
     let mut range = rand::thread_rng();
     let mut res = String::new();
-    for _ in 0..8 {
+    for _ in 0..=len {
         let index = range.gen_range(0..ALPHABET.len());
         res.push(ALPHABET.chars().nth(index).unwrap());
     }
