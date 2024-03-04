@@ -1,6 +1,6 @@
 hidden = ["target", ".cargo"]
 modules = ["rust-stable:v4-20240117-0bd73cd"]
-run = "cargo run -lib"
+run = "cargo build --lib"
 
 [nix]
 channel = "stable-23_11"
@@ -9,4 +9,4 @@ channel = "stable-23_11"
 requiredFiles = [".replit"]
 
 [deployment]
-run = ["sh", "-c", "cargo run -lib"]
+run = ["sh", "-c", "cargo build --lib"]

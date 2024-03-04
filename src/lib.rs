@@ -1,1 +1,1 @@
-pub mod vigenere;
+pub mod cipher;
