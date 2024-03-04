@@ -1,24 +1,9 @@
 
-use serde_json::{
-    json::{Value,Json}
-};
-use rand;
-
-pub mod vigenere{
+pub mod vigenere {
   
-const ALPHABET:&str = "abcdefghijklmnopqrstuvwxyz";
-pub fn gen_random (len:i32)-> &'a str{
-    let mut range = rand::thread_rng();
-    let mut res = String::new();
-    for _ in 0..=len {
-        let index = range.gen_range(0..ALPHABET.len());
-        res.push(ALPHABET.chars().nth(index).unwrap());
-    }
-    res.as_str()
-}
+const ALPHABETS :&str = "abcdefghijklmnopqrstuvwxyz";
 
-}
-
+//Convert vectors to strings based on const -> ALPHABETS indexes
 fn stringify(arr: &Vec<i32>) -> String {
     arr.iter()
         .map(|&c| {
@@ -30,12 +15,12 @@ fn stringify(arr: &Vec<i32>) -> String {
         })
         .collect()
 }
-
+///convert string to vector of indexes mapped to const-> ALPHABETS 
 fn arrayify(q: &str) -> Vec<i32> {
     q.to_lowercase()
     .chars()
         .map(|c| {
-            if let Some(index) = ALPH.find(c) {
+            if let Some(index) = ALPHABETS.find(c) {
                 index as i32
             } else {
                 -1
@@ -45,10 +30,11 @@ fn arrayify(q: &str) -> Vec<i32> {
 }
 
 pub fn encode(data: &str, key: &str) -> String {
-    let d_1 = arrayify(&data);
-    let k_1 = arrayify(&key);
-    let k_2: Vec<_> = (0..data.len()).map(|i| k_1[i % k_1.len()]).collect();
-
+   //key vectors
+    let _key = arrayify(&key);
+    //hack to work with any key Length 
+    let _key_expansion: Vec<_> = (0..data.len()).map(|i| _key[i % _key.len()]).collect();
+//mapping each characters
     let res: Vec<_> = data
         .chars()
         .enumerate()
@@ -56,18 +42,20 @@ pub fn encode(data: &str, key: &str) -> String {
             if c == ' ' {
                 return -1;
             }
-            ((c as i32 - 'a' as i32 + k_2[i % k_1.len()]) % ALPH.len() as i32)
+            //calculation VIGENERE ALGORITHM 
+            (c as i32 - 'a' as i32 + _key_expansion[i % _key_expansion.len()]) % ALPHABETS.len() as i32
         })
         .collect();
-
+///return result 
     stringify(&res)
 }
 
 pub fn decode(data: &str, key: &str) -> String {
-    let d_1 = arrayify(&data);
-    let k_1 = arrayify(&key);
-    let k_2: Vec<_> = (0..data.len()).map(|i| k_1[i % k_1.len()]).collect();
-
+   ///convert key to vector 
+    let _key = arrayify(key);
+    //hack to work with all key Length 
+    let _key_expansion: Vec<_> = (0..data.len()).map(|i| _key[i % _key.len()]).collect();
+///map each character against it's index in const-> ALPHABET
     let res: Vec<_> = data
         .chars()
         .enumerate()
@@ -75,10 +63,11 @@ pub fn decode(data: &str, key: &str) -> String {
             if c == ' ' {
                 return -1;
             }
-            ((c as i32 - 'a' as i32 - k_2[i % k_1.len()] + ALPH.len() as i32) % ALPH.len() as i32)
+            //calculation 
+            (c as i32 - 'a' as i32 - _key_expansion[i % _key_expansion.len()] + ALPHABETS.len() as i32) % ALPHABETS.len() as i32
         })
         .collect();
-
+///return the result 
     stringify(&res)
-}
+  }
 };

@@ -1,3 +1,1 @@
-mod vigenere;
-
-use vigenere;
+pub mod vigenere;
